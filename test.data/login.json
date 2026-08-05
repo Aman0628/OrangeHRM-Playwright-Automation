@@ -1,0 +1,8 @@
+[
+  {
+    "testCase": "Valid Login",
+    "username": "Admin",
+    "password": "admin123",
+    "expected": "success"
+  }
+]

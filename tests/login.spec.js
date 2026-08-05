@@ -1,19 +1,18 @@
-// @ts-check
-import { test, expect } from '@playwright/test';
+const { test, expect } = require('@playwright/test');
+const { POManager } = require('../pages/POManager');
 
-test('has title', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
 
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/Playwright/);
+test('Login Test ', async ({ page }) => {
+
+  const poManager = new POManager(page);
+
+  const loginPage = poManager.getLoginPage();
+  const dashboardPage = poManager.getDashboardPage();
+
+  await loginPage.navigate();
+  await loginPage.validLogin('Admin', 'admin123');
+
+
+  await dashboardPage.verifyDashboardHeader();
 });
 
-test('get started link', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
-
-  // Click the get started link.
-  await page.getByRole('link', { name: 'Get started' }).click();
-
-  // Expects page to have a heading with the name of Installation.
-  await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
-});
