@@ -9,22 +9,22 @@ async function login(page) {
   await loginPage.login('Admin', 'admin123');
 }
 
-test('Recruitment - open candidates list', async ({ page }) => {
+test('Performance - open performance page', async ({ page }) => {
   await login(page);
   const poManager = new POManager(page);
   const dashboardPage = poManager.getDashboardPage();
-  const recruitmentPage = poManager.getRecruitmentPage();
+  const performancePage = poManager.getPerformancePage();
 
-  await dashboardPage.navigateToModule('Recruitment');
-  await recruitmentPage.verifyPageHeader();
+  await dashboardPage.navigateToModule('Performance');
+  await performancePage.verifyPageHeader();
 });
 
-test('Recruitment - open add candidate form', async ({ page }) => {
+test('Performance - open employee reviews', async ({ page }) => {
   await login(page);
   const poManager = new POManager(page);
   const dashboardPage = poManager.getDashboardPage();
-  const recruitmentPage = poManager.getRecruitmentPage();
+  const performancePage = poManager.getPerformancePage();
 
-  await dashboardPage.navigateToModule('Recruitment');
-  await recruitmentPage.openAddCandidateForm();
+  await dashboardPage.navigateToModule('Performance');
+  await performancePage.openEmployeeReviews();
 });

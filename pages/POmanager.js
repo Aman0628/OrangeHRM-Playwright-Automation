@@ -1,23 +1,68 @@
 const { LoginPage } = require('../pages/LoginPage');
-const { DashboardPage } = require('../pages/DashboardPage')
+const { DashboardPage } = require('../pages/DashboardPage');
+const { AdminPage } = require('../pages/AdminPage');
+const { PIMPage } = require('../pages/PIMPage');
+const { LeavePage } = require('../pages/LeavePage');
+const { RecruitmentPage } = require('../pages/RecruitmentPage');
+const { MyInfoPage } = require('../pages/MyInfoPage');
+const { PerformancePage } = require('../pages/PerformancePage');
+const { BuzzPage } = require('../pages/BuzzPage');
 
 class POManager {
 
-    constructor ( page ) {
+    constructor(page) {
+        this.page = page;
 
-        this.page = page ;
-
-        this.loginPage = new LoginPage( page );
-        this.dashboardPage = new DashboardPage( page );
+        this.loginPage = new LoginPage(page);
+        this.dashboardPage = new DashboardPage(page);
+        this.adminPage = new AdminPage(page);
+        this.pimPage = new PIMPage(page);
+        this.leavePage = new LeavePage(page);
+        this.recruitmentPage = new RecruitmentPage(page);
+        this.myInfoPage = new MyInfoPage(page);
+        this.performancePage = new PerformancePage(page);
+        this.buzzPage = new BuzzPage(page);
     }
-    
-    getLoginPage () {
+
+    getLoginPage() {
         return this.loginPage;
-
     }
-    getDashboardPage () {
+
+    getDashboardPage() {
         return this.dashboardPage;
-
     }
- }
- module.exports = { POManager };
+
+    getAdminPage() {
+        return this.adminPage;
+    }
+
+    getPIMPage() {
+        return this.pimPage;
+    }
+
+    getLeavePage() {
+        return this.leavePage;
+    }
+
+    getRecruitmentPage() {
+        return this.recruitmentPage;
+    }
+
+    getMyInfoPage() {
+        return this.myInfoPage;
+    }
+
+    getPerformancePage() {
+        return this.performancePage;
+    }
+
+    getMaintenancePage() {
+        return this.maintenancePage;
+    }
+
+    getBuzzPage() {
+        return this.buzzPage;
+    }
+}
+
+module.exports = { POManager };

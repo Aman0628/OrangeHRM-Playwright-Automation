@@ -9,22 +9,22 @@ async function login(page) {
   await loginPage.login('Admin', 'admin123');
 }
 
-test('Recruitment - open candidates list', async ({ page }) => {
+test('My Info - open personal details', async ({ page }) => {
   await login(page);
   const poManager = new POManager(page);
   const dashboardPage = poManager.getDashboardPage();
-  const recruitmentPage = poManager.getRecruitmentPage();
+  const myInfoPage = poManager.getMyInfoPage();
 
-  await dashboardPage.navigateToModule('Recruitment');
-  await recruitmentPage.verifyPageHeader();
+  await dashboardPage.navigateToModule('My Info');
+  await myInfoPage.verifyPageHeader();
 });
 
-test('Recruitment - open add candidate form', async ({ page }) => {
+test('My Info - open attachments tab', async ({ page }) => {
   await login(page);
   const poManager = new POManager(page);
   const dashboardPage = poManager.getDashboardPage();
-  const recruitmentPage = poManager.getRecruitmentPage();
+  const myInfoPage = poManager.getMyInfoPage();
 
-  await dashboardPage.navigateToModule('Recruitment');
-  await recruitmentPage.openAddCandidateForm();
+  await dashboardPage.navigateToModule('My Info');
+  await myInfoPage.openAttachmentsTab();
 });
