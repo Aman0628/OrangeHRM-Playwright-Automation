@@ -13,6 +13,11 @@ class LoginPage {
 
     async navigate() {
         await this.page.goto('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
+        // The shared public demo instance can be slow to finish rendering
+        // the login form even after `goto` resolves; wait for the
+        // Username field explicitly (with its own generous timeout) rather
+        // than letting a slow render eat into the caller's action timeout.
+        await this.username.waitFor({ state: 'visible', timeout: 30_000 });
     }
 
     async login(username, password) {

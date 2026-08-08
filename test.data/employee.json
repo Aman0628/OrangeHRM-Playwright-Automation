@@ -1,0 +1,16 @@
+[
+  {
+    "testCase": "Add Employee - minimal required fields",
+    "firstName": "Jordan",
+    "lastName": "Ferreira",
+    "middleName": "",
+    "employeeId": ""
+  },
+  {
+    "testCase": "Add Employee - with middle name",
+    "firstName": "Priya",
+    "middleName": "Kaur",
+    "lastName": "Chandra",
+    "employeeId": ""
+  }
+]

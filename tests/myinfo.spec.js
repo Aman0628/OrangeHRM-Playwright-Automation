@@ -1,30 +1,22 @@
 const { test } = require('@playwright/test');
-const { POManager } = require('../pages/POmanager');
+const { describeModule } = require('../utils/moduleLogin');
 
-async function login(page) {
-  const poManager = new POManager(page);
-  const loginPage = poManager.getLoginPage();
+describeModule('My Info module', (getPoManager) => {
+  test('My Info - open personal details', async () => {
+    const poManager = getPoManager();
+    const dashboardPage = poManager.getDashboardPage();
+    const myInfoPage = poManager.getMyInfoPage();
 
-  await loginPage.navigate();
-  await loginPage.login('Admin', 'admin123');
-}
+    await dashboardPage.navigateToModule('My Info');
+    await myInfoPage.verifyPageHeader();
+  });
 
-test('My Info - open personal details', async ({ page }) => {
-  await login(page);
-  const poManager = new POManager(page);
-  const dashboardPage = poManager.getDashboardPage();
-  const myInfoPage = poManager.getMyInfoPage();
+  test('My Info - open attachments tab', async () => {
+    const poManager = getPoManager();
+    const dashboardPage = poManager.getDashboardPage();
+    const myInfoPage = poManager.getMyInfoPage();
 
-  await dashboardPage.navigateToModule('My Info');
-  await myInfoPage.verifyPageHeader();
-});
-
-test('My Info - open attachments tab', async ({ page }) => {
-  await login(page);
-  const poManager = new POManager(page);
-  const dashboardPage = poManager.getDashboardPage();
-  const myInfoPage = poManager.getMyInfoPage();
-
-  await dashboardPage.navigateToModule('My Info');
-  await myInfoPage.openAttachmentsTab();
+    await dashboardPage.navigateToModule('My Info');
+    await myInfoPage.openAttachmentsTab();
+  });
 });

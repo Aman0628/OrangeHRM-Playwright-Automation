@@ -7,6 +7,7 @@ const { RecruitmentPage } = require('../pages/RecruitmentPage');
 const { MyInfoPage } = require('../pages/MyInfoPage');
 const { PerformancePage } = require('../pages/PerformancePage');
 const { BuzzPage } = require('../pages/BuzzPage');
+const { TimePage } = require('../pages/TimePage');
 
 class POManager {
 
@@ -22,6 +23,7 @@ class POManager {
         this.myInfoPage = new MyInfoPage(page);
         this.performancePage = new PerformancePage(page);
         this.buzzPage = new BuzzPage(page);
+        this.timePage = new TimePage(page);
     }
 
     getLoginPage() {
@@ -56,8 +58,8 @@ class POManager {
         return this.performancePage;
     }
 
-    getMaintenancePage() {
-        return this.maintenancePage;
+    getTimePage() {
+        return this.timePage;
     }
 
     getBuzzPage() {

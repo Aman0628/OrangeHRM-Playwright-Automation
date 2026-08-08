@@ -1,40 +1,55 @@
 const { test } = require('@playwright/test');
-const { POManager } = require('../pages/POmanager');
+const { describeModule } = require('../utils/moduleLogin');
+const employeeData = require('../test.data/employee.json');
 
-async function login(page) {
-  const poManager = new POManager(page);
-  const loginPage = poManager.getLoginPage();
+describeModule('PIM module', (getPoManager) => {
+  test('PIM - open employee list', async () => {
+    const poManager = getPoManager();
+    const dashboardPage = poManager.getDashboardPage();
+    const pimPage = poManager.getPIMPage();
 
-  await loginPage.navigate();
-  await loginPage.login('Admin', 'admin123');
-}
+    await dashboardPage.navigateToModule('PIM');
+    await pimPage.verifyPageHeader();
+  });
 
-test('PIM - open employee list', async ({ page }) => {
-  await login(page);
-  const poManager = new POManager(page);
-  const dashboardPage = poManager.getDashboardPage();
-  const pimPage = poManager.getPIMPage();
+  test('PIM - open add employee form loads the create-employee page', async () => {
+    const poManager = getPoManager();
+    const dashboardPage = poManager.getDashboardPage();
+    const pimPage = poManager.getPIMPage();
 
-  await dashboardPage.navigateToModule('PIM');
-  await pimPage.verifyPageHeader();
-});
+    await dashboardPage.navigateToModule('PIM');
+    await pimPage.openAddEmployeeForm();
+  });
 
-test('PIM - open add employee form', async ({ page }) => {
-  await login(page);
-  const poManager = new POManager(page);
-  const dashboardPage = poManager.getDashboardPage();
-  const pimPage = poManager.getPIMPage();
+  test('PIM - search employee by name returns matching results', async () => {
+    const poManager = getPoManager();
+    const dashboardPage = poManager.getDashboardPage();
+    const pimPage = poManager.getPIMPage();
 
-  await dashboardPage.navigateToModule('PIM');
-  await pimPage.openAddEmployeeForm();
-});
+    await dashboardPage.navigateToModule('PIM');
+    await pimPage.searchEmployee('Alice');
+  });
 
-test('PIM - search employee by name', async ({ page }) => {
-  await login(page);
-  const poManager = new POManager(page);
-  const dashboardPage = poManager.getDashboardPage();
-  const pimPage = poManager.getPIMPage();
+  test('PIM - search for a non-existent employee shows no records', async () => {
+    const poManager = getPoManager();
+    const dashboardPage = poManager.getDashboardPage();
+    const pimPage = poManager.getPIMPage();
 
-  await dashboardPage.navigateToModule('PIM');
-  await pimPage.searchEmployee('Alice');
+    await dashboardPage.navigateToModule('PIM');
+    await pimPage.searchEmployee('Zzznobody_999');
+  });
+
+  for (const emp of employeeData) {
+    test(`PIM - add employee (${emp.testCase})`, async () => {
+      const poManager = getPoManager();
+      const dashboardPage = poManager.getDashboardPage();
+      const pimPage = poManager.getPIMPage();
+
+      await dashboardPage.navigateToModule('PIM');
+      await pimPage.addEmployee(emp);
+
+      await dashboardPage.navigateToModule('PIM');
+      await pimPage.searchEmployee(emp.firstName);
+    });
+  }
 });

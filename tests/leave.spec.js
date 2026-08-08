@@ -1,30 +1,32 @@
 const { test } = require('@playwright/test');
-const { POManager } = require('../pages/POmanager');
+const { describeModule } = require('../utils/moduleLogin');
 
-async function login(page) {
-  const poManager = new POManager(page);
-  const loginPage = poManager.getLoginPage();
+describeModule('Leave module', (getPoManager) => {
+  test('Leave - open leave list', async () => {
+    const poManager = getPoManager();
+    const dashboardPage = poManager.getDashboardPage();
+    const leavePage = poManager.getLeavePage();
 
-  await loginPage.navigate();
-  await loginPage.login('Admin', 'admin123');
-}
+    await dashboardPage.navigateToModule('Leave');
+    await leavePage.verifyPageHeader();
+  });
 
-test('Leave - open leave list', async ({ page }) => {
-  await login(page);
-  const poManager = new POManager(page);
-  const dashboardPage = poManager.getDashboardPage();
-  const leavePage = poManager.getLeavePage();
+  test('Leave - filter panel fields are present and usable', async () => {
+    const poManager = getPoManager();
+    const dashboardPage = poManager.getDashboardPage();
+    const leavePage = poManager.getLeavePage();
 
-  await dashboardPage.navigateToModule('Leave');
-  await leavePage.verifyPageHeader();
-});
+    await dashboardPage.navigateToModule('Leave');
+    await leavePage.openFilters();
+  });
 
-test('Leave - open leave list filters', async ({ page }) => {
-  await login(page);
-  const poManager = new POManager(page);
-  const dashboardPage = poManager.getDashboardPage();
-  const leavePage = poManager.getLeavePage();
+  test('Leave - applying filters updates the leave list', async () => {
+    const poManager = getPoManager();
+    const dashboardPage = poManager.getDashboardPage();
+    const leavePage = poManager.getLeavePage();
 
-  await dashboardPage.navigateToModule('Leave');
-  await leavePage.openFilters();
+    await dashboardPage.navigateToModule('Leave');
+    await leavePage.openFilters();
+    await leavePage.applyFilters();
+  });
 });

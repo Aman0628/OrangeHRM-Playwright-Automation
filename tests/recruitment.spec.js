@@ -1,30 +1,22 @@
 const { test } = require('@playwright/test');
-const { POManager } = require('../pages/POmanager');
+const { describeModule } = require('../utils/moduleLogin');
 
-async function login(page) {
-  const poManager = new POManager(page);
-  const loginPage = poManager.getLoginPage();
+describeModule('Recruitment module', (getPoManager) => {
+  test('Recruitment - open candidates list', async () => {
+    const poManager = getPoManager();
+    const dashboardPage = poManager.getDashboardPage();
+    const recruitmentPage = poManager.getRecruitmentPage();
 
-  await loginPage.navigate();
-  await loginPage.login('Admin', 'admin123');
-}
+    await dashboardPage.navigateToModule('Recruitment');
+    await recruitmentPage.verifyPageHeader();
+  });
 
-test('Recruitment - open candidates list', async ({ page }) => {
-  await login(page);
-  const poManager = new POManager(page);
-  const dashboardPage = poManager.getDashboardPage();
-  const recruitmentPage = poManager.getRecruitmentPage();
+  test('Recruitment - open add candidate form', async () => {
+    const poManager = getPoManager();
+    const dashboardPage = poManager.getDashboardPage();
+    const recruitmentPage = poManager.getRecruitmentPage();
 
-  await dashboardPage.navigateToModule('Recruitment');
-  await recruitmentPage.verifyPageHeader();
-});
-
-test('Recruitment - open add candidate form', async ({ page }) => {
-  await login(page);
-  const poManager = new POManager(page);
-  const dashboardPage = poManager.getDashboardPage();
-  const recruitmentPage = poManager.getRecruitmentPage();
-
-  await dashboardPage.navigateToModule('Recruitment');
-  await recruitmentPage.openAddCandidateForm();
+    await dashboardPage.navigateToModule('Recruitment');
+    await recruitmentPage.openAddCandidateForm();
+  });
 });

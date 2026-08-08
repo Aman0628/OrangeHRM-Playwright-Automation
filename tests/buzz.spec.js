@@ -1,30 +1,22 @@
 const { test } = require('@playwright/test');
-const { POManager } = require('../pages/POmanager');
+const { describeModule } = require('../utils/moduleLogin');
 
-async function login(page) {
-  const poManager = new POManager(page);
-  const loginPage = poManager.getLoginPage();
+describeModule('Buzz module', (getPoManager) => {
+  test('Buzz - open buzz feed', async () => {
+    const poManager = getPoManager();
+    const dashboardPage = poManager.getDashboardPage();
+    const buzzPage = poManager.getBuzzPage();
 
-  await loginPage.navigate();
-  await loginPage.login('Admin', 'admin123');
-}
+    await dashboardPage.navigateToModule('Buzz');
+    await buzzPage.verifyPageHeader();
+  });
 
-test('Buzz - open buzz feed', async ({ page }) => {
-  await login(page);
-  const poManager = new POManager(page);
-  const dashboardPage = poManager.getDashboardPage();
-  const buzzPage = poManager.getBuzzPage();
+  test('Buzz - open post composer', async () => {
+    const poManager = getPoManager();
+    const dashboardPage = poManager.getDashboardPage();
+    const buzzPage = poManager.getBuzzPage();
 
-  await dashboardPage.navigateToModule('Buzz');
-  await buzzPage.verifyPageHeader();
-});
-
-test('Buzz - open post composer', async ({ page }) => {
-  await login(page);
-  const poManager = new POManager(page);
-  const dashboardPage = poManager.getDashboardPage();
-  const buzzPage = poManager.getBuzzPage();
-
-  await dashboardPage.navigateToModule('Buzz');
-  await buzzPage.openPostComposer();
+    await dashboardPage.navigateToModule('Buzz');
+    await buzzPage.openPostComposer();
+  });
 });

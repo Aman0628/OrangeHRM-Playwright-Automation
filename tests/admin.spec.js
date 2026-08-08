@@ -1,40 +1,40 @@
 const { test } = require('@playwright/test');
-const { POManager } = require('../pages/POmanager');
+const { describeModule } = require('../utils/moduleLogin');
 
-async function login(page) {
-  const poManager = new POManager(page);
-  const loginPage = poManager.getLoginPage();
+describeModule('Admin module', (getPoManager) => {
+  test('Admin - open User Management', async () => {
+    const poManager = getPoManager();
+    const dashboardPage = poManager.getDashboardPage();
+    const adminPage = poManager.getAdminPage();
 
-  await loginPage.navigate();
-  await loginPage.login('Admin', 'admin123');
-}
+    await dashboardPage.navigateToModule('Admin');
+    await adminPage.verifyPageHeader();
+  });
 
-test('Admin - open User Management', async ({ page }) => {
-  await login(page);
-  const poManager = new POManager(page);
-  const dashboardPage = poManager.getDashboardPage();
-  const adminPage = poManager.getAdminPage();
+  test('Admin - search for a system user returns matching results', async () => {
+    const poManager = getPoManager();
+    const dashboardPage = poManager.getDashboardPage();
+    const adminPage = poManager.getAdminPage();
 
-  await dashboardPage.navigateToModule('Admin');
-  await adminPage.verifyPageHeader();
-});
+    await dashboardPage.navigateToModule('Admin');
+    await adminPage.searchUser('Admin');
+  });
 
-test('Admin - search for a system user', async ({ page }) => {
-  await login(page);
-  const poManager = new POManager(page);
-  const dashboardPage = poManager.getDashboardPage();
-  const adminPage = poManager.getAdminPage();
+  test('Admin - search for a non-existent user shows no records', async () => {
+    const poManager = getPoManager();
+    const dashboardPage = poManager.getDashboardPage();
+    const adminPage = poManager.getAdminPage();
 
-  await dashboardPage.navigateToModule('Admin');
-  await adminPage.searchUser('Admin');
-});
+    await dashboardPage.navigateToModule('Admin');
+    await adminPage.searchUser('NoSuchUser_zzz999');
+  });
 
-test('Admin - open add user form', async ({ page }) => {
-  await login(page);
-  const poManager = new POManager(page);
-  const dashboardPage = poManager.getDashboardPage();
-  const adminPage = poManager.getAdminPage();
+  test('Admin - open add user form loads the create-user page', async () => {
+    const poManager = getPoManager();
+    const dashboardPage = poManager.getDashboardPage();
+    const adminPage = poManager.getAdminPage();
 
-  await dashboardPage.navigateToModule('Admin');
-  await adminPage.openAddUserForm();
+    await dashboardPage.navigateToModule('Admin');
+    await adminPage.openAddUserForm();
+  });
 });

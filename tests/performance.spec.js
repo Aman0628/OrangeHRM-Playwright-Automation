@@ -1,30 +1,22 @@
 const { test } = require('@playwright/test');
-const { POManager } = require('../pages/POmanager');
+const { describeModule } = require('../utils/moduleLogin');
 
-async function login(page) {
-  const poManager = new POManager(page);
-  const loginPage = poManager.getLoginPage();
+describeModule('Performance module', (getPoManager) => {
+  test('Performance - open performance page', async () => {
+    const poManager = getPoManager();
+    const dashboardPage = poManager.getDashboardPage();
+    const performancePage = poManager.getPerformancePage();
 
-  await loginPage.navigate();
-  await loginPage.login('Admin', 'admin123');
-}
+    await dashboardPage.navigateToModule('Performance');
+    await performancePage.verifyPageHeader();
+  });
 
-test('Performance - open performance page', async ({ page }) => {
-  await login(page);
-  const poManager = new POManager(page);
-  const dashboardPage = poManager.getDashboardPage();
-  const performancePage = poManager.getPerformancePage();
+  test('Performance - open employee reviews', async () => {
+    const poManager = getPoManager();
+    const dashboardPage = poManager.getDashboardPage();
+    const performancePage = poManager.getPerformancePage();
 
-  await dashboardPage.navigateToModule('Performance');
-  await performancePage.verifyPageHeader();
-});
-
-test('Performance - open employee reviews', async ({ page }) => {
-  await login(page);
-  const poManager = new POManager(page);
-  const dashboardPage = poManager.getDashboardPage();
-  const performancePage = poManager.getPerformancePage();
-
-  await dashboardPage.navigateToModule('Performance');
-  await performancePage.openEmployeeReviews();
+    await dashboardPage.navigateToModule('Performance');
+    await performancePage.openEmployeeReviews();
+  });
 });

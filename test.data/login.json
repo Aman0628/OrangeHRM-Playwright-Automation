@@ -4,5 +4,11 @@
     "username": "Admin",
     "password": "admin123",
     "expected": "success"
+  },
+  {
+    "testCase": "Invalid Password",
+    "username": "Admin",
+    "password": "wrongpassword",
+    "expected": "failure"
   }
 ]

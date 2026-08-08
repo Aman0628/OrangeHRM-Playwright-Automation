@@ -18,10 +18,22 @@ export default defineConfig({
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
-  /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
-  /* Opt out of parallel tests on CI. */
+  /*
+   * The target here is the public OrangeHRM demo instance, which is shared
+   * with everyone else running these same tests. It slows down (and
+   * occasionally times out) under concurrent load in a way a real app
+   * under test wouldn't, so we retry even locally instead of treating a
+   * slow first response as a hard failure.
+   */
+  retries: process.env.CI ? 2 : 1,
+  /*
+   * Keep worker count modest against the shared demo site — 6 simultaneous
+   * headed logins was enough to make the site slow to respond and blow
+   * through the default action timeout on the very first `fill()`.
+   */
   workers: process.env.CI ? 1 : 6,
+  /* Give actions/navigations more headroom against a public, rate-limited demo site. */
+  timeout: 45_000,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -31,6 +43,10 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
+    actionTimeout: 15_000,
+    navigationTimeout: 30_000,
   },
 
   /* Configure projects for major browsers */

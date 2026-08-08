@@ -16,7 +16,11 @@ class DashboardPage {
     }
 
     async navigateToModule(moduleName) {
-        await this.page.getByRole('link', { name: moduleName }).click();
+        // Scope to the sidebar's main menu items (.oxd-main-menu-item) —
+        // an unscoped getByRole('link', { name }) also substring-matches
+        // top-bar sub-tabs that appear once inside a module (e.g. "Leave"
+        // matches "My Leave" / "Leave List" / "Assign Leave" too).
+        await this.page.locator('.oxd-main-menu-item', { hasText: moduleName }).click();
     }
 
     async logout() {
